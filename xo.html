@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Крестики-нолики</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script language="JavaScript" src="xo.js"></script>
+    <link href="xo.css" rel="stylesheet" type="text/css" media="all">
+</head>
+<body>
+
+<table class="XO">
+    <tr>
+        <td onclick="touch(1,1,this)"></td>
+        <td onclick="touch(1,2,this)"></td>
+        <td onclick="touch(1,3,this)"></td>
+    </tr>
+    <tr>
+        <td onclick="touch(2,1,this)"></td>
+        <td onclick="touch(2,2,this)"></td>
+        <td onclick="touch(2,3,this)"></td>
+    </tr>
+    <tr>
+        <td onclick="touch(3,1,this)"></td>
+        <td onclick="touch(3,2,this)"></td>
+        <td onclick="touch(3,3,this)"></td>
+    </tr>
+</table>
+
+<div id="currentMove">
+    Ход: <span id="player" class="XO">X</span>
+</div>
+<div id="result">
+    Здесь будет результат игры
+</div>
+<button id="newGame" name="Заново!" value="Заново" onclick="newGame()">Новая игра</button>
+</body>
+</html>

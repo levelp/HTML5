@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Периодическая система Менделеева</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script language="JavaScript" src="main.js"></script>
+    <style type="text/css">
+        table#main {
+            border: 1px solid black;
+        }
+
+        td {
+            border: 1px solid black;
+        }
+
+        div.title {
+            float: left;
+            font-size: 40px;
+        }
+
+        div.number {
+            float: right;
+            font-size: small;
+        }
+
+        td.s {
+            background-color: #ff9174;
+        }
+
+        td.d {
+            background-color: #0be6ff;
+        }
+
+        div.description {
+            display: none; /* Описание элементов не показывается (его вообще не рисуют */
+        }
+
+        #description { /* Сюда выводится подробное описание элемента */
+            margin: 10px;
+            border: 1px solid black;
+            padding: 3px;
+            display: none;
+            font-size: 19px;
+        }
+
+        div#formula {
+            margin: 10px;
+            font-size: xx-large;
+        }
+    </style>
+</head>
+<body>
+
+
+<table id="main">
+    <tr> <!-- Table Row - строка таблицы -->
+        <td class="s"> <!-- начало строки -->
+            <div class="title">H</div>
+            <div class="number">1</div>
+            <div class="name">Водород</div>
+            <div class="weight">1.008</div>
+            <div class="description">Название представляет собой кальку с латинского: Hydrogenium «порождающий воду»
+                Широко распространён в природе.<br>
+                Простое вещество водород - <b>H<sub>2</sub></b> - лёгкий бесцветный газ.
+            </div>
+        </td> <!-- Окончание строки -->
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td class="s">
+            <div class="title">He</div>
+            <div class="number">2</div>
+            <div class="name">Гелий</div>
+            <div class="weight">4.00</div>
+        </td>
+    </tr>
+    <tr>
+        <td class="s">
+            <div class="title">Li</div>
+            <div class="number">3</div>
+            <div class="name">Литий</div>
+            <div class="weight">6.961</div>
+        </td>
+        <td class="s">
+            <div class="title">Be</div>
+            <div class="number">4</div>
+            <div class="name">Бериллий</div>
+            <div class="weight">9.0122</div>
+        </td>
+        <td class="s">
+            <div class="number">5</div>
+            <div class="title">B</div>
+            <div class="name">Бор</div>
+        </td>
+        <td class="d">
+            <div class="number">6</div>
+            <div class="title">C</div>
+            <div class="name">Углерод</div>
+        </td>
+        <td class="d">
+            <div class="number">7</div>
+            <div class="title">N</div>
+            <div class="name">Азот</div>
+        </td>
+        <td class="d">
+            <div class="number">8</div>
+            <div class="title">O</div>
+            <div class="name">Кислород</div>
+        </td>
+        <td class="d">
+            <div class="number">9</div>
+            <div class="title">F</div>
+            <div class="name">Фтор</div>
+        </td>
+        <td class="d">
+            <div class="number">10</div>
+            <div class="title">Ne</div>
+            <div class="name">Неон</div>
+        </td>
+    </tr>
+</table>
+
+<!-- Описание элемента -->
+<div id="description">
+</div>
+
+<!-- Здесь будет показываться формула -->
+<div id="formula">
+</div>
+
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ООП с прототипами</title>
+    <script language="JavaScript">
+        var animal = {
+            eats: true,
+            name: "<впишите имя>",
+            x: 0,
+            y: 0,
+            move: function (dx, dy) {
+                this.x += dx;
+                this.y += dy;
+                console.log(this.name + " двигается на (" + dx + ";" + dy + ") " +
+                    "и теперь в (" + this.x + ";" + this.y + ")");
+            }
+        };
+        var rabbit = {
+            name: "Кролик",
+            jumps: true
+        };
+
+        rabbit.__proto__ = animal;
+
+        // в rabbit можно найти оба свойства
+        console.log("rabbit.jumps = " + rabbit.jumps); // true
+        console.log("rabbit.eats = " + rabbit.eats); // true
+
+        var tiger = {
+            name: "Тигр",
+            hunt: function (toAnimal) {
+                console.log("Охотимся на " + toAnimal.name);
+            }
+        };
+
+        tiger.__proto__ = animal;
+        tiger.move(1, 2);
+        tiger.move(3, 4);
+        rabbit.move(4, 7);
+        tiger.hunt(rabbit);
+    </script>
+</head>
+<body>
+
+</body>
+</html>

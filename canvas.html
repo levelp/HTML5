@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Моделирование физики</title>
+</head>
+<body>
+<canvas width='1000' height='700' id='example'>Обновите браузер</canvas>
+<script>
+    var example = document.getElementById("example"),
+        ctx = example.getContext('2d');
+    var skipFrames = 0;
+
+    // TODO: Двойной буфер для рисования
+    /*  var canvas2 = document.createElement('canvas');
+     canvas2.width = mainCtx.width;
+     canvas2.height = mainCtx.height;
+     var ctx = canvas2.getContext('2d'); */
+
+
+    // Вектор
+    function Vector(x, y) {
+        this.x = x;
+        this.y = y;
+
+        // Длина вектора
+        this.length = function () {
+            return Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2));
+        };
+
+        this.drawVector = function (color, fromX, fromY) {
+            ctx.strokeStyle = color;
+            ctx.beginPath();
+            ctx.moveTo(fromX, fromY);
+            ctx.lineTo(fromX + this.x, fromY + this.y);
+            ctx.stroke();
+        }
+    }
+
+    // Создать мячик с заданными координатами центра, скоростями
+    // и радиусом
+    function Ball(x, y, Vx, Vy, radius) {
+        // Сохраняем свойства мячика
+        // Координаты мячика
+        this.x = x;
+        this.y = y;
+        // Скорость по x и y
+        this.V = new Vector(Vx, Vy);
+        // Радиус мячика
+        this.radius = radius;
+
+        this.fillColor = "#4d8fff";
+        this.strokeColor = "#1507ff";
+
+        // Рисуем мячик
+        this.draw = function () {
+            // Цвет в формате RGB (3 байта)
+            // Red (красный) Green (зелёный) Blue (синий)
+            // Любой цвет задаётся комбинацией (суммой этих 3 компонент)
+            // 1 байт = диапазон 0..255 = (в шестнадцатеричной системе счисления) 0..FF
+            ctx.fillStyle = this.fillColor; // определяет цвет заливки
+            ctx.strokeStyle = this.strokeColor;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI, true);
+            ctx.fill();
+            ctx.stroke();
+
+            this.V.drawVector("#000000", this.x, this.y);
+        };
+
+        // Перемещение мячика
+        this.move = function () {
+            // Меняем скорость в соответствии с силами
+            // На каждый шарик действует гравитация
+            //this.Vy += 2.0; //;9.8;
+            // Меняем координаты
+            this.x += this.V.x * timeStep;
+            this.y += this.V.y * timeStep;
+            // TODO: Учесть сопротивление воздуха
+            // Столновение с верхней и нижней стенкой
+            if (this.y >= (example.height - this.radius)) {
+                // Столкновение с полом или потолком
+                this.V.y = -this.V.y;
+                this.y = example.height - this.radius;
+            }
+            if (this.y <= this.radius) {
+                this.V.y = -this.V.y;
+                this.y = this.radius;
+            }
+            // Столкновение со стенками по x
+            if (this.x <= this.radius || this.x >= (example.width - this.radius)) {
+                this.V.x = -this.V.x;
+            }
+        };
+
+        this.mirror = function (mirror) {
+            var angle = Math.atan2(this.V.y, this.V.x);
+            // Угол зеркала
+            var ma = Math.atan2(mirror.y, mirror.x);
+            // Отражаем относительно зеркала
+            var newAngle = ma + (ma - angle);
+            // Считаем скорость суммарную по x и y
+            var V = this.V.length();
+            // Откладываем её по новому углу
+            this.V.x = V * Math.cos(newAngle);
+            this.V.y = V * Math.sin(newAngle);
+            this.V.drawVector("#00AA00", this.x, this.y);
+        }
+    }
+
+    // Учёт пересечений (столкновений) шариков
+    function collisions() {
+        for (var i = 0; i < balls.length; i++)
+            for (var j = i + 1; j < balls.length; j++) {
+                var a = balls[i];
+                var b = balls[j];
+                // Расстояние между центрами мячиков
+                var dist = Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
+                // Сравниваем расстояние
+                if ((a.radius + b.radius) > dist) {
+                    // Расстояние между центрами меньше суммы их радиусов
+                    // есть столкновение
+                    console.log("Столкновение! " + dist);
+                    // TODO: должны отскакивать друг от друга
+                    // Вектор между центрами окружности
+                    var cent = new Vector(b.x - a.x, b.y - a.y);
+                    // Соединяем центры шариков
+                    cent.drawVector("#ff2500", a.x, a.y);
+                    // Вектор относительно которого отражается
+                    var mirror = new Vector(-cent.y, cent.x);
+                    mirror.drawVector("#0000FF", a.x, a.y);
+                    mirror.drawVector("#0000FF", b.x, b.y);
+                    a.mirror(mirror);
+                    b.mirror(mirror);
+                    skipFrames = 500; //  Задержка чтобы пропустить кадры и посмотреть
+                    // как меняются вектора
+                }
+            }
+    }
+
+    var b1 = new Ball(80, 100, 20.0, 20.0, 50);
+    var b2 = new Ball(180, 120, -30.0, -30.0, 40);
+    b2.fillColor = "#FF0000";
+    b2.strokeColor = "#880000";
+    var b3 = new Ball(280, 190, 100.0, 100.0, 75);
+    b3.fillColor = "#ff88b7";
+    b3.strokeColor = "#7b3088";
+    var b4 = new Ball(460, 290, -200.0, -180.0, 75);
+    b4.fillColor = "#b482ff";
+    b4.strokeColor = "#4b884d";
+    var balls = [b1, b2, b3, b4];
+
+    // Шаг по времени в секундах
+    var timeStep = 1.0 / 60;
+
+    // Рисуем поле на котором всё происходит
+    function drawScene() {
+        // Границы нашего поля
+        ctx.fillStyle = "#FFFFFF";
+        ctx.strokeStyle = "#000000";
+        ctx.fillRect(0, 0, example.width, example.height);
+        ctx.strokeRect(0, 0, example.width, example.height);
+    }
+
+
+    drawScene();
+    for (var i = 0; i < balls.length; i++) {
+        balls[i].draw();
+    }
+    // mainCtx.drawImage(canvas2, 0, 0);
+    setInterval(function () {
+        if (skipFrames === 0) {
+            drawScene();
+            for (var i = 0; i < balls.length; i++) {
+                balls[i].move();
+                balls[i].draw();
+            }
+            collisions();
+        } else if (skipFrames > 0) {
+            skipFrames--;
+        }
+        // mainCtx.drawImage(canvas2, 0, 0);
+    }, timeStep * 1000);
+</script>
+</body>
+</html>

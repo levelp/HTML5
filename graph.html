@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Графики, построение графиков</title>
+</head>
+<body>
+<canvas width='1000' height='700' id='graph'>График</canvas>
+
+<script language="JavaScript">
+    var graph = document.getElementById("graph"),
+        ctx = graph.getContext('2d');
+
+    // Границы графика
+    ctx.fillStyle = "#FFFFFF";
+    ctx.strokeStyle = "#000000";
+    ctx.fillRect(0, 0, graph.width, graph.height);
+    ctx.strokeRect(0, 0, graph.width, graph.height);
+
+    // Функция для построения графика
+    function f(x) {
+        return x * x;
+    }
+
+    // Размер единицы по X или Y в пикселях
+    var scale = 200.0;
+    // Где будет находиться точка (0,0) в экранных координатах (в пикселях)
+    var centerX = graph.width / 2;
+    var centerY = (2 * graph.height) / 3;
+    // Рисуем график по точкам
+    ctx.strokeStyle = "#000088";
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    for (var sx = 0; sx < graph.width; sx++) {
+        var x = (sx - centerX) / scale;
+        var y = f(x);
+        var sy = centerY - (y * scale);
+        ctx.lineTo(sx, sy);
+    }
+    ctx.stroke();
+
+    // TODO: сделать отрисовку осей координат
+    // TODO: показать значения на осях координат
+    // TODO: как менять мастаб графика?
+</script>
+</body>
+</html>

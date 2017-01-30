@@ -1,0 +1,33 @@
+table#main {
+    border: 1px solid black;
+}
+
+td {
+    border: 1px solid black;
+    width: 100px;
+    height: 100px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+/* Изображение крестиков и ноликов */
+.XO {
+    font-size: 86px;
+    font-family: "Courier New", serif;
+    font-weight: bold;
+}
+
+/* #id - идентификатор (конкретный элемент на странице, и у одного эдемента только один id) */
+/* .class - класс (может быть применён к любому количеству элементов) */
+div#currentMove {
+    font-size: 40px;
+}
+
+#result {
+    font-size: 40px;
+    color: blue;
+}
+
+#newGame {
+    font-size: 30px;
+}
