@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head><title>Basketball</title></head>
+<body>
+<canvas id="myCanvas" width="400" height="400" style="border:1px solid #c3c3c3;">
+    Your browser does not support the canvas element.
+</canvas>
+<script>
+    var c = document.getElementById("myCanvas");
+    var ctx = c.getContext("2d");
+
+    function draw_ball(ball) {
+        ctx.clearRect(0, 0, 400, 400);
+        ctx.fillStyle = "#FF0000";
+        ctx.beginPath();
+        ctx.arc(ball.x, ball.y, 30, 0, Math.PI * 2, true);
+        ctx.closePath();
+        ctx.fill();
+    }
+
+    var deltat = 1;
+    var ball = {};
+    ball.y = 0;
+    ball.x = 200;
+    ball.vy = 0;
+    ball.vx = 10;
+    ball.ay = 9.8;
+    ball.ax = 0.1;
+
+    function compute_position() {
+        if (ball.y > 370 && ball.vy > 0) {
+            ball.vy = -ball.vy * 84 / 86;
+        }
+        if (ball.x < 30) {
+            ball.vx = -ball.vx;
+            ball.ax = -ball.ax;
+        } else if (ball.x > 370) {
+            ball.vx = -ball.vx;
+            ball.ax = -ball.ax;
+        }
+        ball.ax = ball.ax / 2;
+        ball.vx = ball.vx * 185 / 186;
+        ball.y = ball.y + ball.vy * deltat + ball.ay * deltat * deltat / 2;
+        ball.x = ball.x + ball.vx * deltat + ball.ax * deltat * deltat / 2;
+        ball.vy = ball.vy + ball.ay * deltat;
+        ball.vx = ball.vx + ball.ax * deltat;
+        draw_ball(ball);
+    }
+
+    setInterval(compute_position, 40);
+</script>
+</body>
+</html>
