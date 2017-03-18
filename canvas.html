@@ -5,7 +5,7 @@
     <title>Моделирование физики</title>
 </head>
 <body>
-<canvas height='600' width='800' id='example'>Обновите браузер</canvas>
+<canvas width='1000' height='700' id='example'>Обновите браузер</canvas>
 <script>
     var example = document.getElementById("example"),
         ctx = example.getContext('2d');
@@ -104,7 +104,7 @@
             // Откладываем её по новому углу
             this.V.x = V * Math.cos(newAngle);
             this.V.y = V * Math.sin(newAngle);
-            this.draw("#000000", this.x, this.y);
+            this.V.drawVector("#00AA00", this.x, this.y);
         }
     }
 
@@ -124,12 +124,16 @@
                     // TODO: должны отскакивать друг от друга
                     // Вектор между центрами окружности
                     var cent = new Vector(b.x - a.x, b.y - a.y);
-                    cent.drawVector("#382e38", a.x, a.y);
+                    // Соединяем центры шариков
+                    cent.drawVector("#ff2500", a.x, a.y);
                     // Вектор относительно которого отражается
                     var mirror = new Vector(-cent.y, cent.x);
+                    mirror.drawVector("#0000FF", a.x, a.y);
+                    mirror.drawVector("#0000FF", b.x, b.y);
                     a.mirror(mirror);
                     b.mirror(mirror);
-                    skipFrames = 100;
+                    skipFrames = 500; //  Задержка чтобы пропустить кадры и посмотреть
+                    // как меняются вектора
                 }
             }
     }
@@ -138,10 +142,13 @@
     var b2 = new Ball(180, 120, -30.0, -30.0, 40);
     b2.fillColor = "#FF0000";
     b2.strokeColor = "#880000";
-    var b3 = new Ball(280, 120, -100.0, -100.0, 40);
+    var b3 = new Ball(280, 190, 100.0, 100.0, 75);
     b3.fillColor = "#ff88b7";
     b3.strokeColor = "#7b3088";
-    var balls = [b1, b2, b3];
+    var b4 = new Ball(460, 290, -200.0, -180.0, 75);
+    b4.fillColor = "#b482ff";
+    b4.strokeColor = "#4b884d";
+    var balls = [b1, b2, b3, b4];
 
     // Шаг по времени в секундах
     var timeStep = 1.0 / 60;
